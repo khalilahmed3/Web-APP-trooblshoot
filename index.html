@@ -4,157 +4,517 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="app_title">Ciao Work order issue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
- :root {
- --bg1: rgba(0,255,255,0.14);
- --bg2: rgba(255,0,255,0.13);
- --bg3a: #03020a;
- --bg3b: #100022;
- --panel: rgba(10, 8, 24, 0.78);
- --panel-strong: rgba(18, 14, 42, 0.92);
- --panel-soft: rgba(255,255,255,0.055);
- --line: rgba(0,255,255,0.24);
- --line-hot: rgba(255,0,255,0.28);
- --text: #f7fbff;
- --muted: #b8c4d9;
- --accent1: #ff4d1f;
- --accent2: #ff00ff;
- --accent3: #00ffff;
- --btn-bg: linear-gradient(135deg, #ff4d1f, #ff00ff);
- --btn-bg-hover: linear-gradient(135deg, #00ffff, #ff00ff);
- --radius: 10px;
- --shadow-cyber: 0 18px 60px rgba(0,0,0,.45), 0 0 28px rgba(0,255,255,.22), 0 0 52px rgba(255,0,255,.12);
- }
- * { box-sizing: border-box; }
- html { min-height: 100%; }
- body {
- min-height: 100vh;
- font-family: "Segoe UI", Arial, sans-serif;
- margin: 0;
- padding: 0;
- background:
- radial-gradient(circle at 18% 14%, rgba(0,255,255,.18), transparent 26%),
- radial-gradient(circle at 84% 12%, rgba(255,0,255,.16), transparent 28%),
- linear-gradient(120deg, var(--bg1), transparent 42%),
- linear-gradient(240deg, var(--bg2), transparent 42%),
- linear-gradient(0deg, var(--bg3a), var(--bg3b));
- background-size: 160% 160%, 140% 140%, 200% 200%, 200% 200%, 100% 100%;
- animation: cyberMove 14s linear infinite;
- color: var(--text);
- overflow-x: hidden;
- }
- body::before {
- content: "";
- position: fixed;
- inset: 0;
- pointer-events: none;
- background-image:
- linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
- linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
- background-size: 44px 44px;
- mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 78%);
- }
- @keyframes cyberMove { 0%{background-position:0% 50%,100% 0%,0% 50%,100% 50%,0 0} 100%{background-position:100% 50%,0% 100%,100% 50%,0% 50%,0 0} }
- .brand-left,.brand-right{position:fixed;top:16px;z-index:1000;display:flex;align-items:center;gap:10px;min-height:46px;padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);background:rgba(3,2,10,.46);box-shadow:0 0 20px rgba(0,255,255,.12);backdrop-filter:blur(10px)}
- .brand-left{left:16px} .brand-right{right:16px}
- .brand-left img{height:34px;width:auto;display:block;filter:drop-shadow(0 0 8px rgba(0,255,255,.55))}
- .brand-right strong{font-weight:700;letter-spacing:.4px;color:#fff;text-shadow:0 0 8px rgba(0,255,255,.35),0 0 14px rgba(255,0,255,.25);font-size:16px;white-space:nowrap}
- .page-top-spacer{height:92px;width:100%}
- #app{width:min(1120px,calc(100% - 32px));margin:0 auto 36px;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)), var(--panel);border:1px solid rgba(0,255,255,.22);border-radius:14px;box-shadow:var(--shadow-cyber);backdrop-filter:blur(16px);position:relative;overflow:hidden}
- #app::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--accent3),var(--accent2),var(--accent1));box-shadow:0 0 18px rgba(0,255,255,.65);pointer-events:none}
- .app-header{display:grid;grid-template-columns:1fr;align-items:start;gap:18px;margin-bottom:24px;position:relative;text-align:center;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.1)}
- h1{margin:0;text-align:center;text-shadow:0 0 8px var(--accent3),0 0 18px rgba(255,0,255,.55);font-size:clamp(1.8rem,4vw,3rem);line-height:1.05;letter-spacing:0;text-transform:uppercase}
- h1::after{content:"Troubleshooting dashboard";display:block;margin-top:10px;color:var(--muted);font-size:.82rem;font-weight:500;letter-spacing:.4px;text-transform:none;text-shadow:none}
- .step-title{margin:0 0 12px;text-align:center;font-size:clamp(1.25rem,2vw,1.65rem);line-height:1.25;color:#fff;text-shadow:0 0 12px rgba(0,255,255,.28)}
- .text-center{text-align:center;color:var(--muted);margin:0 0 22px}.text-center strong{color:#fff;font-weight:600}
- .visually-hidden,.sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
- .step{display:none;margin:0}.step.is-active{display:block}
- .buttons-center{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px;width:100%}
- .btn,.btn-secondary{appearance:none;color:#fff;border:1px solid rgba(255,255,255,.14);padding:13px 16px;margin:0;cursor:pointer;border-radius:var(--radius);font-size:14px;font-weight:700;letter-spacing:.35px;text-transform:uppercase;transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;min-height:52px}
- .btn{background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.03)), var(--btn-bg);box-shadow:0 10px 24px rgba(0,0,0,.28),0 0 14px rgba(255,60,0,.32),0 0 22px rgba(255,0,255,.2);position:relative;overflow:hidden}
- .btn::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.24),transparent);transform:translateX(-120%);transition:transform .45s ease}.btn:hover::before{transform:translateX(120%)}
- .btn:hover,.btn-secondary:hover{transform:translateY(-2px);border-color:rgba(0,255,255,.55);box-shadow:0 14px 32px rgba(0,0,0,.32),0 0 18px rgba(0,255,255,.5),0 0 30px rgba(255,0,255,.32);background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)), var(--btn-bg-hover)}
- .btn:focus-visible,.btn-secondary:focus-visible,.inline-input:focus-visible{outline:2px solid var(--accent3);outline-offset:3px}
- .btn-secondary{background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 0 14px rgba(0,255,255,.1);text-transform:none;letter-spacing:.2px;min-height:38px;padding:9px 12px}
- .bottom-actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
- .image-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}.help-image{width:150px;height:110px;object-fit:cover;border-radius:var(--radius);cursor:pointer;transition:.25s;box-shadow:0 0 12px rgba(0,0,0,.4)}.help-image:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,255,255,.8)}
- ol,ul{padding-left:20px}li{color:#ffd3d3;margin-bottom:8px;line-height:1.45}p{line-height:1.55}.lang-switcher{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
- h1,h2,h3,h4,.step-title{text-align:center;}
- #steps:focus { outline: none; }
- .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.82); backdrop-filter: blur(8px); }
- .modal img { max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: var(--radius); box-shadow: 0 0 28px rgba(0,255,255,0.42); }
- .modal-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 30px; cursor: pointer; z-index: 2; }
- @media (max-width: 860px){.app-header{grid-template-columns:1fr;text-align:center}.lang-switcher{justify-content:center}h1{text-align:center}.buttons-center{grid-template-columns:repeat(2,minmax(0,1fr))}}
- @media (max-width: 560px){.brand-left,.brand-right{position:static;margin:10px 16px 0;justify-content:center}.page-top-spacer{height:18px}#app{width:calc(100% - 20px);padding:20px 14px;margin-bottom:20px}.buttons-center{grid-template-columns:1fr}.btn{min-height:50px}.lang-switcher .btn-secondary{flex:1 1 130px}}
- .global-back-button-container { text-align: center; margin-top: 22px; }
- #globalBackButton { display: none; }
- .modal-content {
- background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)), var(--panel-strong);
- margin: 10vh auto;
- padding: 22px;
- border: 1px solid rgba(0,255,255,.34);
- width: min(640px, calc(100% - 32px));
- max-height: 80vh;
- border-radius: 14px;
- box-shadow: var(--shadow-cyber);
- position: relative;
- }
- .inline-input { background: transparent; border: none; border-bottom: 1px solid var(--accent3); color: #ffd3d3; padding: 2px 6px; margin-left: 5px; outline: none; width: min(250px, 100%); }
- .rephrase-btn { background: linear-gradient(135deg, var(--accent2), var(--accent3)); border: none; color: white; border-radius: 7px; cursor: pointer; padding: 4px 9px; font-size: 12px; margin-left: 6px; transition: opacity 0.2s, transform .2s; }
- .rephrase-btn:hover { opacity: 0.86; transform: translateY(-1px); }
- .search-result-item { background: rgba(255,255,255,0.06); border: 1px solid rgba(0,255,255,0.2); padding: 15px; margin-bottom: 10px; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease; }
- .search-result-item:hover { background: rgba(0,255,255,0.11); border-color: var(--accent3); transform: translateY(-2px); }
- .section-toolbar{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:0 0 14px}
- .section-toolbar .step-title{margin:0}
- .search-box{display:flex;align-items:center;gap:8px;min-width:min(100%,360px);padding:6px;border:1px solid rgba(0,255,255,.24);border-radius:var(--radius);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 0 18px rgba(0,255,255,.1)}
- .search-input{flex:1;min-width:0;background:transparent;border:0;color:var(--text);font:inherit;font-size:14px;outline:0;padding:8px 10px}
- .search-input::placeholder{color:rgba(247,251,255,.58)}
- .search-btn{min-height:38px;padding:8px 13px;font-size:12px;white-space:nowrap}
- @media (max-width: 720px){.section-toolbar{display:grid;grid-template-columns:1fr;gap:12px}.search-box{width:100%;min-width:0}.search-btn{padding-left:10px;padding-right:10px}}
- </style>
+  :root {
+    /* Core palette — deep navy + warm gold accent */
+    --bg-base:    #0d1117;
+    --bg-surface: #161b25;
+    --bg-raised:  #1c2333;
+    --bg-hover:   #212840;
+    --border:     rgba(255,255,255,0.07);
+    --border-accent: rgba(196,160,80,0.35);
+
+    --text-primary:   #e8eaf0;
+    --text-secondary: #8892a4;
+    --text-muted:     #525d70;
+
+    --gold:       #c4a050;
+    --gold-light: #e0bc6e;
+    --gold-dim:   rgba(196,160,80,0.15);
+
+    --teal:       #4fb8c0;
+    --teal-dim:   rgba(79,184,192,0.12);
+
+    --btn-primary:    #c4a050;
+    --btn-primary-h:  #e0bc6e;
+    --btn-secondary:  #1c2333;
+    --btn-secondary-h:#212840;
+
+    --panel: #161b25;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-panel: 0 4px 32px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bg-base);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(196,160,80,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 90%, rgba(79,184,192,0.05) 0%, transparent 50%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Top nav bar ── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    height: 60px;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+  }
+
+  .brand-left, .brand-right {
+    position: static !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .brand-left img {
+    height: 30px;
+    width: auto;
+    filter: brightness(0) invert(1) opacity(0.85);
+  }
+
+  .brand-right strong {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .topbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 16px;
+  }
+
+  .page-top-spacer { height: 80px; }
+
+  /* ── App container ── */
+  #app {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    padding: 32px 32px 40px;
+    background: var(--panel);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-panel);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Header ── */
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  h1::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 18px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-right: 12px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* ── Step content ── */
+  .step { display: none; }
+  .step.is-active { display: block; animation: fadeIn 0.25s ease both; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .step > p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
+
+  /* ── Button grid ── */
+  .buttons-center {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    text-align: left;
+    box-shadow: none;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px 0 0 2px;
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+
+  .btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 0 1px rgba(196,160,80,0.1);
+  }
+
+  .btn:hover::before { opacity: 1; }
+
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: background 0.18s;
+  }
+
+  .btn:hover .btn-icon { background: rgba(196,160,80,0.25); }
+
+  /* Secondary button (back, lang) */
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    box-shadow: none;
+    transition: all 0.15s ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    border-color: rgba(255,255,255,0.12);
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ── Lang switcher ── */
+  .lang-switcher {
+    position: static;
+    display: flex;
+    gap: 6px;
+  }
+
+  /* ── Bottom actions ── */
+  .bottom-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .global-back-button-container {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: left;
+  }
+
+  #globalBackButton {
+    display: none;
+    gap: 6px;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  /* ── Images ── */
+  .image-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+
+  .help-image {
+    width: 140px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: 1px solid var(--border);
+    opacity: 0.85;
+  }
+
+  .help-image:hover {
+    transform: scale(1.04);
+    opacity: 1;
+    border-color: var(--border-accent);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  /* ── Lists ── */
+  ol, ul { padding-left: 20px; }
+  li { color: var(--text-secondary); font-size: 0.93rem; margin-bottom: 6px; }
+
+  /* ── Focus ── */
+  #steps:focus { outline: none; }
+
+  /* ── Modals ── */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal img {
+    max-width: 88%;
+    max-height: 88%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 48px rgba(0,0,0,0.7);
+    border: 1px solid var(--border);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: var(--text-secondary);
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .modal-close:hover { color: var(--text-primary); }
+
+  .modal-content {
+    background: var(--bg-surface);
+    margin: 10% auto;
+    padding: 28px;
+    border: 1px solid var(--border);
+    width: 80%;
+    max-width: 580px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-panel);
+    position: relative;
+  }
+
+  .modal-content h3 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Inline inputs ── */
+  .inline-input {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-primary);
+    padding: 3px 8px;
+    margin-left: 6px;
+    outline: none;
+    width: 220px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    transition: border-color 0.15s;
+  }
+  .inline-input:focus { border-color: var(--gold); }
+
+  /* ── Rephrase button ── */
+  .rephrase-btn {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    margin-left: 6px;
+    transition: all 0.15s;
+  }
+  .rephrase-btn:hover {
+    background: var(--gold-dim);
+    border-color: var(--border-accent);
+    color: var(--gold-light);
+  }
+
+  /* ── Search results ── */
+  .search-result-item {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .search-result-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-1px);
+  }
+
+  .search-result-item h4 {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .search-result-item p {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  /* ── Search bar (if in header) ── */
+  .search-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0;
+    align-items: center;
+  }
+
+  input[type="text"]#stepSearch {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 200px;
+  }
+
+  input[type="text"]#stepSearch:focus { border-color: var(--gold); }
+  input[type="text"]#stepSearch::placeholder { color: var(--text-muted); }
+
+  /* ── Visually hidden ── */
+  .visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+    white-space: nowrap;
+    border: 0; padding: 0; margin: -1px;
+  }
+  </style>
 </head>
 <body>
-<!-- BRAND -->
-<div class="brand-left"><img src="images/dxc.png" alt="DXC"></div>
-<div class="brand-right"><strong>EssilorLuxottica</strong></div>
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="brand-left"><img src="images/dxc.png" alt="DXC"></div>
+  <div class="topbar-divider"></div>
+  <div class="brand-right"><strong>EssilorLuxottica</strong></div>
+</nav>
 <div class="page-top-spacer"></div>
 
 
 
   <div id="app" role="application" aria-live="polite">
     <header class="app-header">
-      
-      <h1>Web App Dashboard</h1>
-      
-      <div class="lang-switcher" aria-label="Language switcher">
-        <button type="button" class="btn-secondary" onclick="setLanguage('it')" data-i18n="btn_lang_it">Italiano  🇮🇹</button>
-        <button type="button" class="btn-secondary" onclick="setLanguage('en')" data-i18n="btn_lang_en">English 🇬🇧</button>
+      <h1>Troubleshooting Hub</h1>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="search-row">
+          <input type="text" id="stepSearch" placeholder="Cerca per parola chiave…" aria-label="Cerca step" style="width:200px;" />
+          <button type="button" class="btn-secondary" onclick="performSearch()" data-i18n="search_btn">CERCA</button>
+        </div>
+        <div class="lang-switcher" aria-label="Language switcher">
+          <button type="button" class="btn-secondary" onclick="setLanguage('it')" data-i18n="btn_lang_it">IT 🇮🇹</button>
+          <button type="button" class="btn-secondary" onclick="setLanguage('en')" data-i18n="btn_lang_en">EN 🇬🇧</button>
+        </div>
       </div>
     </header>
 
     <main id="steps" tabindex="-1">
       <section id="step1" class="step is-active" aria-labelledby="step2A-title">
-                <div class="section-toolbar">
-          <h2 id="step2A-title" class="step-title" data-i18n="landing_title">Tipologie di problematiche</h2>
-          <div class="search-box" role="search">
-            <input type="search" id="stepSearch" class="search-input" placeholder="Cerca una problematica..." aria-label="Cerca una problematica" data-i18n-placeholder="search_placeholder">
-            <button type="button" class="btn-secondary search-btn" onclick="performSearch()" data-i18n="search_btn">CERCA</button>
-          </div>
-        </div>
-        <p class="text-center"><strong data-i18n="ciao_optical_software">Ciao Optical software</strong></p>
+        <h2 id="step2A-title" class="step-title" data-i18n="landing_title">Tipologie di problematiche su CIAO</h2>
         
         <div class="buttons-center">
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/CIAO-SERVER/" data-i18n="btn_ciao_server">Ciao Server</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/ciao-aplication-issue/" data-i18n="btn_ciao_app_issue">Ciao Application Issue</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/ipad_troubleshooter/" data-i18n="btn_ipad_troubleshooting">Ipad Troubleshooting</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/POS_troubleshooting/" data-i18n="btn_pos_troubleshooting">POS Troubleshooting</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/RESET_PASSWORD/" data-i18n="btn_reset_password">Reset password</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Stampante-A4/" data-i18n="btn_printer_a4">Stampante-A4 issue</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Fiscal_printer/" data-i18n="btn_fiscal_printer">Fiscal Printer</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/optic_not_found/" data-i18n="btn_fatal_error">Ottico non Trovato</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Tracer/" data-i18n="btn_tracer">Tracer</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Store_Database/" data-i18n="btn_negozio">Informazioni negozio</button>
-          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Knowledg-Base-Toolkit/" data-i18n="btn_Toolkit">Toolkit applicazioni</button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/CIAO-SERVER/"><span class="btn-icon">🖥️</span><span data-i18n="btn_ciao_server">Ciao Server</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/ciao-aplication-issue/"><span class="btn-icon">⚠️</span><span data-i18n="btn_ciao_app_issue">Ciao Application Issue</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/ipad_troubleshooter/"><span class="btn-icon">📱</span><span data-i18n="btn_ipad_troubleshooting">iPad Troubleshooting</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/POS_troubleshooting/"><span class="btn-icon">🏧</span><span data-i18n="btn_pos_troubleshooting">POS Troubleshooting</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/RESET_PASSWORD/"><span class="btn-icon">🔑</span><span data-i18n="btn_reset_password">Reset Password</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Stampante-A4/"><span class="btn-icon">🖨️</span><span data-i18n="btn_printer_a4">Stampante A4</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Fiscal_printer/"><span class="btn-icon">🧾</span><span data-i18n="btn_fiscal_printer">Fiscal Printer</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/optic_not_found/"><span class="btn-icon">👁️</span><span data-i18n="btn_fatal_error">Ottico non Trovato</span></button>
+          <button type="button" class="btn" data-url="https://khalilahmed3.github.io/Tracer/"><span class="btn-icon">📐</span><span data-i18n="btn_tracer">Tracer</span></button>
         </div>
       </section>
     </main>
@@ -199,8 +559,7 @@ const translations = {
   btn_lang_en: "English 🇬🇧",
   search_instr: "È possibile anche cercare per parola chiave",
   search_btn: "CERCA",
-  search_placeholder: "Cerca una problematica...",
-  landing_title: "Tipologie di problematiche",
+  landing_title: "Tipologie di problematiche su CIAO",
   ciao_optical_software: "Ciao Optical software",
   btn_ciao_server: "Ciao Server",
   btn_ciao_app_issue: "Problemi Applicazione Ciao",
@@ -210,9 +569,7 @@ const translations = {
   btn_printer_a4: "Problemi Stampante A4",
   btn_fiscal_printer: "Stampante Fiscale",
   btn_fatal_error: "Ottico non Trovato",
-  btn_tracer: "Tracer",
-  btn_negozio: "Informazioni negozio",
-  btn_Toolkit: "Toolkit applicazioni",
+  btn_tracer: "Tracer"
  },
 
  en: {
@@ -228,8 +585,7 @@ const translations = {
   btn_lang_en: "English 🇬🇧",
   search_instr: "You can also search by keyword",
   search_btn: "SEARCH",
-  search_placeholder: "Search an issue...",
-  landing_title: "Types of issues",
+  landing_title: "Types of issues related to CIAO",
   ciao_optical_software: "Ciao Optical software",
   btn_ciao_server: "Ciao Server",
   btn_ciao_app_issue: "Ciao Application Issue",
@@ -239,9 +595,7 @@ const translations = {
   btn_printer_a4: "A4 Printer Issue",
   btn_fiscal_printer: "Fiscal Printer",
   btn_fatal_error: "Optician Not Found",
-  btn_tracer: "Tracer",
-  btn_negozio: "Store information",
-  btn_Toolkit: "Applications Toolkit",
+  btn_tracer: "Tracer"
  }
 };
 
@@ -253,13 +607,6 @@ function setLanguage(lang) {
   currentLanguage = lang;
   const t = translations[lang];
   if (!t) return;
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (t[key]) {
-      el.setAttribute('placeholder', t[key]);
-      el.setAttribute('aria-label', t[key]);
-    }
-  });
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key]) {
@@ -709,14 +1056,9 @@ function displaySearchResults(results) {
   results.forEach(result => {
     const item = document.createElement('div');
     item.className = 'search-result-item';
-    item.innerHTML = result.url ? `<h4>${result.title}</h4><p>${result.snippet}</p>` : `<h4>${result.title} (ID: ${result.id})</h4><p>${result.snippet}</p>`;
+    item.innerHTML = `<h4>${result.title} (ID: ${result.id})</h4><p>${result.snippet}</p>`;
     item.onclick = (event) => {
       event.stopPropagation(); // Impedisce al modal di chiudersi quando si clicca un elemento
-      if (result.url) {
-        navigateTo(result.url);
-        closeSearchResultsModal();
-        return;
-      }
       // Traccia la navigazione via ricerca per mantenere coerente il clickTrail
       clickTrail.push({ stepId: currentStepId, it: "[Ricerca]", en: "[Search]" });
       goTo(result.id);
@@ -734,27 +1076,8 @@ function closeSearchResultsModal() {
 }
 
 function performSearch() {
-  const searchInput = document.getElementById('stepSearch');
-  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+  const query = document.getElementById('stepSearch').value.toLowerCase().trim();
   if (!query) return;
-
-  const quickMatches = [];
-  document.querySelectorAll('#step1 .buttons-center button[data-url]').forEach(btn => {
-    const labels = [
-      btn.innerText,
-      getTextFromI18n(btn, 'it'),
-      getTextFromI18n(btn, 'en')
-    ].join(' ').toLowerCase();
-
-    if (labels.includes(query)) {
-      quickMatches.push({
-        id: null,
-        title: btn.innerText.trim(),
-        snippet: btn.getAttribute('data-url') || '',
-        url: btn.getAttribute('data-url')
-      });
-    }
-  });
 
   const foundSteps = [];
   const steps = document.querySelectorAll('.step');
@@ -762,18 +1085,24 @@ function performSearch() {
   for (const step of steps) {
     if (step.id === 'step1') continue;
 
+    // Cloniamo lo step per manipolare il testo senza alterare la pagina
     const stepClone = step.cloneNode(true);
+    // Rimuoviamo i bottoni dal clone così la ricerca ignora le etichette dei tasti
     stepClone.querySelectorAll('button, .btn, .btn-secondary').forEach(b => b.remove());
+
+    // Usiamo textContent perché funziona anche sugli elementi nascosti (display:none)
     const stepText = stepClone.textContent.toLowerCase();
 
     if (stepText.includes(query)) {
       const titleElement = step.querySelector('.step-title, h2');
       const title = titleElement ? titleElement.textContent.trim() : `Step ${step.id}`;
+
+      // Estrai un piccolo snippet di testo attorno alla parola chiave
       let snippet = '';
       const queryIndex = stepText.indexOf(query);
       if (queryIndex !== -1) {
-        const start = Math.max(0, queryIndex - 50);
-        const end = Math.min(stepText.length, queryIndex + query.length + 100);
+        const start = Math.max(0, queryIndex - 50); // 50 caratteri prima
+        const end = Math.min(stepText.length, queryIndex + query.length + 100); // 100 caratteri dopo
         snippet = stepText.substring(start, end);
         if (start > 0) snippet = '...' + snippet;
         if (end < stepText.length) snippet = snippet + '...';
@@ -783,20 +1112,15 @@ function performSearch() {
     }
   }
 
-  const results = [...quickMatches, ...foundSteps];
-
-  if (results.length === 0) {
+  if (foundSteps.length === 0) {
     alert("Nessun risultato trovato per: " + query);
-  } else if (results.length === 1) {
-    if (results[0].url) {
-      navigateTo(results[0].url);
-    } else {
-      goTo(results[0].id);
-    }
+  } else if (foundSteps.length === 1) {
+    goTo(foundSteps[0].id);
   } else {
-    displaySearchResults(results);
+    displaySearchResults(foundSteps);
   }
 }
+
 // Gestione tasto Invio nell'input di ricerca
 document.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && document.activeElement.id === "stepSearch") {
@@ -806,10 +1130,3 @@ document.addEventListener("keydown", (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
